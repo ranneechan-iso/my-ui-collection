@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Developer Portfolio — Hero</title>
+
+    <!-- Tailwind config (must be set before loading CDN) -->
+    <script>
+      tailwind = {
+        config: {
+          darkMode: "class",
+          theme: {
+            extend: {
+              fontFamily: {
+                sans: [
+                  "Inter",
+                  "ui-sans-serif",
+                  "system-ui",
+                  "Segoe UI",
+                  "Roboto",
+                  "Helvetica Neue",
+                  "Arial",
+                  "Noto Sans",
+                  "Apple Color Emoji",
+                  "Segoe UI Emoji",
+                ],
+                mono: [
+                  "JetBrains Mono",
+                  "ui-monospace",
+                  "SFMono-Regular",
+                  "Menlo",
+                  "Monaco",
+                  "Consolas",
+                  "Liberation Mono",
+                  "Courier New",
+                  "monospace",
+                ],
+              },
+              boxShadow: {
+                glow: "0 0 0 1px color-mix(in oklab, var(--ring) 40%, transparent), 0 12px 40px -16px color-mix(in oklab, var(--accent) 30%, transparent)",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* =========================
+       Variables
+       ========================= */
+      :root {
+        --bg: oklch(98% 0.005 260);
+        --surface: oklch(100% 0 0 / 0.55);
+        --surface-2: oklch(100% 0 0 / 0.38);
+        --text: oklch(22% 0.02 260);
+        --muted: oklch(46% 0.02 260);
+        --border: oklch(80% 0.01 260 / 0.55);
+        --ring: oklch(62% 0.11 270);
+        --accent: oklch(58% 0.16 275);
+        --accent-2: oklch(62% 0.12 260);
+        --shadow: 0 20px 50px -30px oklch(20% 0.02 260 / 0.4);
+      }
+
+      .dark {
+        --bg: oklch(14% 0.02 260);
+        --surface: oklch(22% 0.02 260 / 0.55);
+        --surface-2: oklch(22% 0.02 260 / 0.35);
+        --text: oklch(95% 0.01 260);
+        --muted: oklch(70% 0.02 260);
+        --border: oklch(38% 0.02 260 / 0.6);
+        --ring: oklch(70% 0.13 270);
+        --accent: oklch(72% 0.14 275);
+        --accent-2: oklch(74% 0.11 260);
+        --shadow: 0 24px 70px -36px oklch(0% 0 0 / 0.7);
+      }
+
+      /* =========================
+       Base Styles
+       ========================= */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui;
+        background: radial-gradient(
+            1200px 700px at 15% 15%,
+            color-mix(in oklab, var(--accent) 25%, transparent),
+            transparent 60%
+          ),
+          radial-gradient(
+            1000px 600px at 85% 20%,
+            color-mix(in oklab, var(--accent-2) 20%, transparent),
+            transparent 55%
+          ),
+          linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--bg) 92%, black),
+            var(--bg)
+          );
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      :focus-visible {
+        outline: 2px solid color-mix(in oklab, var(--ring) 70%, transparent);
+        outline-offset: 2px;
+      }
+
+      ::selection {
+        background: color-mix(in oklab, var(--accent) 35%, transparent);
+      }
+
+      /* =========================
+       Animations
+       ========================= */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 10px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes floaty {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(0, -8px, 0);
+        }
+      }
+
+      @keyframes caretBlink {
+        0%,
+        49% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* =========================
+       Components
+       ========================= */
+      .glass {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+      }
+
+      .glass-2 {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+      }
+
+      .fade-up {
+        animation: fadeUp 700ms ease-out both;
+      }
+
+      .float {
+        animation: floaty 6s ease-in-out infinite;
+      }
+
+      .kbd {
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo,
+          Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.8em;
+        padding: 0.2rem 0.45rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--surface) 70%, transparent);
+      }
+
+      .tag {
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--surface) 75%, transparent);
+      }
+
+      .tag:hover {
+        border-color: color-mix(in oklab, var(--accent) 45%, var(--border));
+        box-shadow: 0 0 0 3px
+          color-mix(in oklab, var(--accent) 15%, transparent);
+        transform: translate3d(0, -1px, 0);
+      }
+
+      .tag:active {
+        transform: translate3d(0, 0, 0);
+      }
+
+      .caret {
+        display: inline-block;
+        width: 0.6ch;
+        margin-left: 0.1ch;
+        border-left: 2px solid
+          color-mix(in oklab, var(--accent) 70%, var(--text));
+        height: 1em;
+        transform: translateY(0.15em);
+        animation: caretBlink 1s steps(1) infinite;
+      }
+
+      .terminal {
+        background: color-mix(in oklab, var(--bg) 40%, black);
+        border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+        box-shadow: var(--shadow);
+      }
+
+      .token-key {
+        color: color-mix(in oklab, var(--accent) 85%, white);
+      }
+      .token-type {
+        color: color-mix(in oklab, var(--accent-2) 80%, white);
+      }
+      .token-str {
+        color: oklch(78% 0.12 140);
+      }
+      .token-num {
+        color: oklch(78% 0.12 70);
+      }
+      .token-com {
+        color: oklch(72% 0.02 260 / 0.75);
+      }
+
+      /* =========================
+       Utilities
+       ========================= */
+      .sr-only-focusable:active,
+      .sr-only-focusable:focus {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        clip: auto !important;
+        white-space: normal !important;
+      }
+
+      .bg-accents::before,
+      .bg-accents::after {
+        content: "";
+        position: absolute;
+        inset: auto;
+        pointer-events: none;
+        filter: blur(28px);
+        opacity: 0.9;
+      }
+
+      .bg-accents::before {
+        width: 420px;
+        height: 420px;
+        left: -120px;
+        top: -140px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          color-mix(in oklab, var(--accent) 45%, transparent),
+          transparent 60%
+        );
+      }
+
+      .bg-accents::after {
+        width: 520px;
+        height: 520px;
+        right: -180px;
+        bottom: -220px;
+        background: radial-gradient(
+          circle at 60% 40%,
+          color-mix(in oklab, var(--accent-2) 40%, transparent),
+          transparent 58%
+        );
+      }
+    </style>
+  </head>
+
+  <body class="min-h-full">
+    <a href="#main" class="sr-only sr-only-focusable px-4 py-2 inline-block"
+      >Skip to content</a
+    >
+
+    <header class="sticky top-0 z-30">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4">
+        <div
+          class="glass rounded-2xl px-4 sm:px-5 py-3 flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="h-9 w-9 rounded-xl glass-2 flex items-center justify-center"
+              aria-hidden="true"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                class="text-[color:var(--text)]"
+              >
+                <path
+                  d="M4 17l6-6 4 4 6-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M20 7v6h-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-semibold tracking-tight">Dev Portfolio</p>
+              <p class="text-xs text-[color:var(--muted)]">
+                Minimal glass · Indigo accents
+              </p>
+            </div>
+          </div>
+
+          <nav class="flex items-center gap-2" aria-label="Primary">
+            <button
+              id="themeToggle"
+              type="button"
+              class="group glass-2 rounded-xl px-3 py-2 text-sm font-medium inline-flex items-center gap-2 hover:shadow-glow transition"
+              aria-label="Toggle dark mode"
+              aria-pressed="false"
+            >
+              <svg
+                id="iconSun"
+                class="hidden dark:block"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M19 19l-1.5-1.5M19 5l-1.5 1.5M5 19l1.5-1.5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <svg
+                id="iconMoon"
+                class="block dark:hidden"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M21 13.3A8.5 8.5 0 0 1 10.7 3a7.2 7.2 0 1 0 10.3 10.3Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span class="hidden sm:inline">Theme</span>
+              <span class="kbd hidden md:inline" aria-hidden="true">T</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-14">
+      <section class="relative mt-4 sm:mt-8">
+        <div class="absolute inset-0 -z-10 bg-accents"></div>
+
+        <div
+          class="glass rounded-3xl p-5 sm:p-7 lg:p-10 relative overflow-hidden"
+        >
+          <div
+            class="grid grid-cols-1 lg:grid-cols-10 gap-8 lg:gap-10 items-start"
+          >
+            <!-- Left: content (≈70%) -->
+            <div class="lg:col-span-7 fade-up" style="animation-delay: 50ms">
+              <div class="flex items-center gap-3">
+                <span
+                  class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium glass-2"
+                  role="status"
+                  aria-label="Status: available for work"
+                >
+                  <span class="relative flex h-2 w-2" aria-hidden="true">
+                    <span
+                      class="absolute inline-flex h-full w-full rounded-full"
+                      style="
+                        background: color-mix(
+                          in oklab,
+                          var(--accent) 70%,
+                          white
+                        );
+                      "
+                    ></span>
+                    <span
+                      class="absolute inline-flex h-full w-full rounded-full"
+                      style="
+                        background: color-mix(
+                          in oklab,
+                          var(--accent) 40%,
+                          transparent
+                        );
+                        filter: blur(2px);
+                      "
+                    ></span>
+                  </span>
+                  Available for select projects
+                </span>
+
+                <span
+                  class="hidden sm:inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
+                  style="border: 1px dashed var(--border); color: var(--muted)"
+                >
+                  <span aria-hidden="true">UTC</span>
+                  <span
+                    id="localTime"
+                    class="font-mono"
+                    aria-label="Local time"
+                  ></span>
+                </span>
+              </div>
+
+              <h1
+                class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05]"
+              >
+                Building calm, fast
+                <span class="block">
+                  <span class="text-[color:var(--accent)]">interactive</span>
+                  web experiences.
+                </span>
+              </h1>
+
+              <p
+                class="mt-5 text-base sm:text-lg text-[color:var(--muted)] max-w-2xl"
+              >
+                Hi, I’m
+                <strong class="text-[color:var(--text)] font-semibold"
+                  >Nywnchan</strong
+                >
+                — a developer focused on clean UI systems, accessible
+                interactions, and performance that scales.
+              </p>
+
+              <div class="mt-6 flex flex-wrap items-center gap-3">
+                <p class="text-sm sm:text-base text-[color:var(--muted)]">
+                  Current role:
+                  <span class="font-mono text-[color:var(--text)]">
+                    <span id="typingText" aria-label="Current role"></span
+                    ><span class="caret" aria-hidden="true"></span>
+                  </span>
+                </p>
+                <span
+                  class="inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full glass-2"
+                  aria-label="Preferred stack"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M12 2l8 4.5v11L12 22l-8-4.5v-11L12 2Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 22V12"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M20 6.5l-8 5-8-5"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  TypeScript · React · Node
+                </span>
+              </div>
+
+              <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:items-center">
+                <a
+                  href="#contact"
+                  class="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold text-sm sm:text-base text-white"
+                  style="
+                    background: linear-gradient(
+                      135deg,
+                      color-mix(in oklab, var(--accent) 85%, white),
+                      color-mix(in oklab, var(--accent-2) 75%, white)
+                    );
+                    box-shadow: 0 18px 50px -28px color-mix(in oklab, var(
+                            --accent
+                          )
+                          55%, transparent);
+                  "
+                  aria-label="Open contact section"
+                >
+                  <span>Let’s collaborate</span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12h14"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M13 6l6 6-6 6"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+
+                <button
+                  id="copyEmail"
+                  type="button"
+                  class="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold text-sm sm:text-base glass-2 hover:shadow-glow transition"
+                  aria-label="Copy email address to clipboard"
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M9 9h10v10H9V9Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <span>Copy email</span>
+                  <span class="kbd" aria-hidden="true">C</span>
+                </button>
+              </div>
+
+              <div class="mt-8">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-sm font-semibold tracking-tight">Skills</h2>
+                  <p class="text-xs text-[color:var(--muted)]">Click to copy</p>
+                </div>
+
+                <div
+                  class="mt-3 flex flex-wrap gap-2"
+                  role="list"
+                  aria-label="Skill tags"
+                >
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="TypeScript"
+                    role="listitem"
+                  >
+                    TypeScript
+                  </button>
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="React"
+                    role="listitem"
+                  >
+                    React
+                  </button>
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="Node.js"
+                    role="listitem"
+                  >
+                    Node.js
+                  </button>
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="Accessibility"
+                    role="listitem"
+                  >
+                    Accessibility
+                  </button>
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="Design Systems"
+                    role="listitem"
+                  >
+                    Design Systems
+                  </button>
+                  <button
+                    class="tag transition rounded-full px-3 py-1.5 text-xs font-medium"
+                    type="button"
+                    data-skill="Performance"
+                    role="listitem"
+                  >
+                    Performance
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="mt-9 grid grid-cols-3 gap-3 sm:gap-4"
+                aria-label="Stats"
+              >
+                <article class="glass-2 rounded-2xl p-4">
+                  <p class="text-xs text-[color:var(--muted)]">Years</p>
+                  <p
+                    class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight"
+                  >
+                    <span class="stat" data-to="7" data-suffix="+">0</span>
+                  </p>
+                </article>
+                <article class="glass-2 rounded-2xl p-4">
+                  <p class="text-xs text-[color:var(--muted)]">
+                    Projects shipped
+                  </p>
+                  <p
+                    class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight"
+                  >
+                    <span class="stat" data-to="42" data-suffix="">0</span>
+                  </p>
+                </article>
+                <article class="glass-2 rounded-2xl p-4">
+                  <p class="text-xs text-[color:var(--muted)]">PRs merged</p>
+                  <p
+                    class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight"
+                  >
+                    <span class="stat" data-to="380" data-suffix="+">0</span>
+                  </p>
+                </article>
+              </div>
+
+              <div id="contact" class="mt-8 rounded-2xl glass-2 p-4">
+                <div
+                  class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                >
+                  <div>
+                    <p class="text-sm font-semibold">Contact</p>
+                    <p class="text-xs text-[color:var(--muted)]">
+                      nywnchan@example.com · Based in remote-first teams
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <a
+                      href="#"
+                      id="openResume"
+                      class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold glass hover:shadow-glow transition"
+                      aria-label="Open resume"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M14 2v6h6"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M8 13h8M8 17h8"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      Resume
+                    </a>
+                    <a
+                      href="#"
+                      id="openGit"
+                      class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold glass hover:shadow-glow transition"
+                      aria-label="Open GitHub"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M9 19c-4 1.5-4-2.5-6-3m12 6v-3.2c0-.9.3-1.6.8-2-2.6-.3-5.3-1.3-5.3-6a4.6 4.6 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.2s1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1 .6 2.2.1 3.2a4.6 4.6 0 0 1 1.2 3.2c0 4.7-2.7 5.7-5.3 6 .5.4.9 1.2.9 2.4V22"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: visuals (≈30%) -->
+            <aside class="lg:col-span-3 fade-up" style="animation-delay: 140ms">
+              <div class="relative">
+                <!-- Floating badge -->
+                <div class="absolute -top-4 right-0 float" aria-hidden="true">
+                  <div
+                    class="glass rounded-2xl px-3 py-2 flex items-center gap-2"
+                  >
+                    <span
+                      class="h-2 w-2 rounded-full"
+                      style="
+                        background: color-mix(
+                          in oklab,
+                          var(--accent) 70%,
+                          white
+                        );
+                      "
+                    ></span>
+                    <span class="text-xs font-semibold">System: online</span>
+                  </div>
+                </div>
+
+                <!-- Terminal mockup -->
+                <section class="terminal rounded-3xl overflow-hidden">
+                  <header
+                    class="flex items-center justify-between px-4 py-3"
+                    style="
+                      background: color-mix(in oklab, var(--bg) 30%, black);
+                      border-bottom: 1px solid
+                        color-mix(in oklab, var(--border) 70%, transparent);
+                    "
+                  >
+                    <div
+                      class="flex items-center gap-2"
+                      aria-label="Window controls"
+                    >
+                      <span
+                        class="h-3 w-3 rounded-full"
+                        style="background: oklch(72% 0.18 25)"
+                        aria-hidden="true"
+                      ></span>
+                      <span
+                        class="h-3 w-3 rounded-full"
+                        style="background: oklch(80% 0.16 85)"
+                        aria-hidden="true"
+                      ></span>
+                      <span
+                        class="h-3 w-3 rounded-full"
+                        style="background: oklch(72% 0.15 145)"
+                        aria-hidden="true"
+                      ></span>
+                    </div>
+                    <p
+                      class="text-xs font-mono"
+                      style="color: oklch(85% 0.01 260 / 0.9)"
+                    >
+                      portfolio.ts
+                    </p>
+                    <span
+                      class="text-xs font-mono"
+                      style="color: oklch(72% 0.02 260 / 0.8)"
+                      >zsh</span
+                    >
+                  </header>
+
+                  <div class="p-4 sm:p-5">
+                    <pre
+                      class="font-mono text-xs leading-5 overflow-x-auto"
+                      aria-label="TypeScript snippet"
+                      style="color: oklch(92% 0.01 260 / 0.95)"
+                    >
+<code><span class="token-com">// Minimal interface with strong defaults</span>
+<span class="token-key">type</span> <span class="token-type">Focus</span> = <span class="token-str">"a11y"</span> | <span class="token-str">"performance"</span> | <span class="token-str">"systems"</span>;
+
+<span class="token-key">interface</span> <span class="token-type">Profile</span> {
+  <span class="token-key">name</span>: <span class="token-type">string</span>;
+  <span class="token-key">role</span>: <span class="token-type">string</span>;
+  <span class="token-key">focus</span>: <span class="token-type">Focus</span>[];
+}
+
+<span class="token-key">const</span> <span class="token-key">me</span>: <span class="token-type">Profile</span> = {
+  <span class="token-key">name</span>: <span class="token-str">"Nywnchan"</span>,
+  <span class="token-key">role</span>: <span class="token-str">"Frontend Engineer"</span>,
+  <span class="token-key">focus</span>: [<span class="token-str">"a11y"</span>, <span class="token-str">"performance"</span>, <span class="token-str">"systems"</span>]
+};
+
+<span class="token-com">// $ pnpm dev</span>
+<span class="token-com">// Server ready on http://localhost:5173</span></code>
+                  </pre>
+                  </div>
+                </section>
+
+                <!-- Info cards -->
+                <div class="mt-4 grid grid-cols-2 gap-3">
+                  <section
+                    class="glass-2 rounded-2xl p-3"
+                    aria-label="Now playing"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div
+                        class="h-9 w-9 rounded-xl glass flex items-center justify-center"
+                        aria-hidden="true"
+                      >
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M9 18V6l12-2v12"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9 18a3 3 0 1 1-6 0c0-1.7 1.3-3 3-3s3 1.3 3 3Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                          <path
+                            d="M21 16a3 3 0 1 1-6 0c0-1.7 1.3-3 3-3s3 1.3 3 3Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      </div>
+                      <div class="min-w-0">
+                        <p class="text-xs text-[color:var(--muted)]">
+                          Now playing
+                        </p>
+                        <p class="text-sm font-semibold truncate">
+                          Minimal Loops
+                        </p>
+                        <p class="text-xs text-[color:var(--muted)] truncate">
+                          Focus playlist
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section
+                    class="glass-2 rounded-2xl p-3"
+                    aria-label="System status"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div
+                        class="h-9 w-9 rounded-xl glass flex items-center justify-center"
+                        aria-hidden="true"
+                      >
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9 12l2 2 4-5"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </div>
+                      <div class="min-w-0">
+                        <p class="text-xs text-[color:var(--muted)]">Status</p>
+                        <p class="text-sm font-semibold">All checks passing</p>
+                        <p class="text-xs text-[color:var(--muted)]">
+                          Latency <span class="font-mono">23ms</span>
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                <!-- Decorative mini panel -->
+                <div class="mt-3 glass-2 rounded-2xl p-3">
+                  <div class="flex items-center justify-between gap-3">
+                    <p class="text-xs text-[color:var(--muted)]">
+                      Quick actions
+                    </p>
+                    <p class="text-xs text-[color:var(--muted)]">
+                      Keyboard: <span class="kbd" aria-hidden="true">T</span>
+                      <span class="kbd" aria-hidden="true">C</span>
+                    </p>
+                  </div>
+                  <div class="mt-3 flex gap-2">
+                    <button
+                      id="toastTest"
+                      type="button"
+                      class="glass rounded-xl px-3 py-2 text-sm font-semibold hover:shadow-glow transition"
+                      aria-label="Show toast notification"
+                    >
+                      Notify
+                    </button>
+                    <button
+                      id="copyCmd"
+                      type="button"
+                      class="glass rounded-xl px-3 py-2 text-sm font-semibold hover:shadow-glow transition"
+                      aria-label="Copy pnpm dev command"
+                    >
+                      Copy <span class="font-mono">pnpm dev</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toast region -->
+      <div
+        class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,420px)]"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <div id="toast" class="hidden glass rounded-2xl px-4 py-3">
+          <div class="flex items-start gap-3">
+            <div
+              class="mt-0.5 h-9 w-9 rounded-xl glass-2 flex items-center justify-center"
+              aria-hidden="true"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M20 6 9 17l-5-5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p id="toastTitle" class="text-sm font-semibold">Done</p>
+              <p id="toastMsg" class="text-xs text-[color:var(--muted)]">
+                Copied to clipboard.
+              </p>
+            </div>
+            <button
+              id="toastClose"
+              type="button"
+              class="ml-auto rounded-xl px-2 py-1 text-sm glass-2 hover:shadow-glow transition"
+              aria-label="Dismiss notification"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        /* -------------------------
+         Helpers
+         ------------------------- */
+        const $ = (sel, root = document) => root.querySelector(sel);
+        const $$ = (sel, root = document) =>
+          Array.from(root.querySelectorAll(sel));
+
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        );
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+        function setTime() {
+          const el = $("#localTime");
+          if (!el) return;
+          const d = new Date();
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mm = String(d.getMinutes()).padStart(2, "0");
+          el.textContent = `${hh}:${mm}`;
+        }
+
+        /* -------------------------
+         Theme (system pref + persistence)
+         ------------------------- */
+        const storageKey = "portfolio.theme";
+
+        function applyTheme(mode) {
+          const root = document.documentElement;
+          const toggle = $("#themeToggle");
+          const isDark = mode === "dark";
+          root.classList.toggle("dark", isDark);
+          if (toggle) toggle.setAttribute("aria-pressed", String(isDark));
+        }
+
+        function getInitialTheme() {
+          const saved = localStorage.getItem(storageKey);
+          if (saved === "dark" || saved === "light") return saved;
+          return prefersDark.matches ? "dark" : "light";
+        }
+
+        function toggleTheme() {
+          const isDark = document.documentElement.classList.contains("dark");
+          const next = isDark ? "light" : "dark";
+          localStorage.setItem(storageKey, next);
+          applyTheme(next);
+          showToast(
+            "Theme updated",
+            next === "dark" ? "Dark mode enabled." : "Light mode enabled."
+          );
+        }
+
+        prefersDark.addEventListener?.("change", (e) => {
+          // Only auto-follow system when user hasn't explicitly chosen.
+          const saved = localStorage.getItem(storageKey);
+          if (saved) return;
+          applyTheme(e.matches ? "dark" : "light");
+        });
+
+        /* -------------------------
+         Toast
+         ------------------------- */
+        let toastTimer = null;
+
+        function showToast(title, message) {
+          const toast = $("#toast");
+          if (!toast) return;
+
+          $("#toastTitle").textContent = title;
+          $("#toastMsg").textContent = message;
+
+          toast.classList.remove("hidden");
+          toast.style.animation = prefersReducedMotion.matches
+            ? ""
+            : "fadeUp 260ms ease-out both";
+
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            hideToast();
+          }, 2600);
+        }
+
+        function hideToast() {
+          const toast = $("#toast");
+          if (!toast) return;
+          toast.classList.add("hidden");
+        }
+
+        /* -------------------------
+         Clipboard
+         ------------------------- */
+        async function copyText(text) {
+          try {
+            await navigator.clipboard.writeText(text);
+            return true;
+          } catch (_) {
+            // Fallback
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand("copy");
+            document.body.removeChild(ta);
+            return ok;
+          }
+        }
+
+        /* -------------------------
+         Typing effect
+         ------------------------- */
+        const rolePhrases = [
+          "Frontend Engineer",
+          "Design Systems Builder",
+          "TypeScript-first Developer",
+        ];
+
+        function startTyping() {
+          const out = $("#typingText");
+          if (!out) return;
+
+          if (prefersReducedMotion.matches) {
+            out.textContent = rolePhrases[0];
+            return;
+          }
+
+          let phraseIndex = 0;
+          let i = 0;
+          let deleting = false;
+
+          const tick = () => {
+            const phrase = rolePhrases[phraseIndex];
+
+            if (!deleting) {
+              i++;
+              out.textContent = phrase.slice(0, i);
+              if (i >= phrase.length) {
+                deleting = true;
+                setTimeout(tick, 1100);
+                return;
+              }
+              setTimeout(tick, 34 + Math.random() * 22);
+            } else {
+              i--;
+              out.textContent = phrase.slice(0, i);
+              if (i <= 0) {
+                deleting = false;
+                phraseIndex = (phraseIndex + 1) % rolePhrases.length;
+                setTimeout(tick, 240);
+                return;
+              }
+              setTimeout(tick, 18 + Math.random() * 18);
+            }
+          };
+
+          tick();
+        }
+
+        /* -------------------------
+         Stats counter (on scroll)
+         ------------------------- */
+        function animateNumber(el, to, suffix) {
+          const reduce = prefersReducedMotion.matches;
+          if (reduce) {
+            el.textContent = String(to) + (suffix || "");
+            return;
+          }
+
+          const duration = 900;
+          const start = performance.now();
+          const from = 0;
+
+          const step = (t) => {
+            const p = Math.min(1, (t - start) / duration);
+            // easeOutCubic
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = Math.round(from + (to - from) * eased);
+            el.textContent = String(val) + (suffix || "");
+            if (p < 1) requestAnimationFrame(step);
+          };
+
+          requestAnimationFrame(step);
+        }
+
+        function initStats() {
+          const stats = $$(".stat");
+          if (!stats.length) return;
+
+          let hasRun = false;
+
+          const run = () => {
+            if (hasRun) return;
+            hasRun = true;
+            stats.forEach((el) => {
+              const to = Number(el.getAttribute("data-to") || "0");
+              const suffix = el.getAttribute("data-suffix") || "";
+              animateNumber(el, to, suffix);
+            });
+          };
+
+          if (prefersReducedMotion.matches) {
+            run();
+            return;
+          }
+
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting) run();
+              });
+            },
+            { threshold: 0.35 }
+          );
+
+          // Observe the grid container to reduce observers
+          const container =
+            stats[0].closest('[aria-label="Stats"]') || stats[0].parentElement;
+          io.observe(container);
+        }
+
+        /* -------------------------
+         Skill tags
+         ------------------------- */
+        function initSkillTags() {
+          const tags = $$("[data-skill]");
+          tags.forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const skill = btn.getAttribute("data-skill") || "";
+              const ok = await copyText(skill);
+              if (ok)
+                showToast("Copied skill", `“${skill}” copied to clipboard.`);
+              else
+                showToast("Copy failed", "Clipboard permission was blocked.");
+            });
+
+            btn.addEventListener("keydown", (e) => {
+              // Improve keyboard UX: Space already triggers click on button.
+              if (e.key === "Enter") btn.click();
+            });
+          });
+        }
+
+        /* -------------------------
+         Keyboard shortcuts
+         ------------------------- */
+        function initShortcuts() {
+          window.addEventListener("keydown", async (e) => {
+            const tag =
+              e.target && e.target.tagName
+                ? e.target.tagName.toLowerCase()
+                : "";
+            const inForm = ["input", "textarea", "select"].includes(tag);
+            if (inForm) return;
+
+            if (e.key.toLowerCase() === "t") {
+              e.preventDefault();
+              toggleTheme();
+            }
+
+            if (e.key.toLowerCase() === "c") {
+              e.preventDefault();
+              const email = "nywnchan@example.com";
+              const ok = await copyText(email);
+              if (ok)
+                showToast("Copied email", "Email address copied to clipboard.");
+              else
+                showToast("Copy failed", "Clipboard permission was blocked.");
+            }
+
+            if (e.key === "Escape") {
+              hideToast();
+            }
+          });
+        }
+
+        /* -------------------------
+         Init
+         ------------------------- */
+        function initButtons() {
+          $("#themeToggle")?.addEventListener("click", toggleTheme);
+          $("#toastClose")?.addEventListener("click", hideToast);
+
+          $("#copyEmail")?.addEventListener("click", async () => {
+            const email = "nywnchan@example.com";
+            const ok = await copyText(email);
+            if (ok)
+              showToast("Copied email", "Email address copied to clipboard.");
+            else showToast("Copy failed", "Clipboard permission was blocked.");
+          });
+
+          $("#toastTest")?.addEventListener("click", () => {
+            showToast(
+              "Notification",
+              "This is a subtle toast for feedback actions."
+            );
+          });
+
+          $("#copyCmd")?.addEventListener("click", async () => {
+            const ok = await copyText("pnpm dev");
+            if (ok)
+              showToast("Copied command", "“pnpm dev” copied to clipboard.");
+            else showToast("Copy failed", "Clipboard permission was blocked.");
+          });
+
+          $("#openResume")?.addEventListener("click", (e) => {
+            e.preventDefault();
+            showToast("Resume", "Demo link — wire this to your PDF or route.");
+          });
+
+          $("#openGit")?.addEventListener("click", (e) => {
+            e.preventDefault();
+            showToast("GitHub", "Demo link — wire this to your profile.");
+          });
+        }
+
+        function init() {
+          applyTheme(getInitialTheme());
+          setTime();
+          setInterval(setTime, 30_000);
+
+          initButtons();
+          initShortcuts();
+          initSkillTags();
+          initStats();
+          startTyping();
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init);
+        } else {
+          init();
+        }
+      })();
+    </script>
+  </body>
+</html>

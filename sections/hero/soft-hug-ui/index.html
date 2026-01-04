@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playful Pink Hero</title>
+
+    <!-- Tailwind (CDN) -->
+    <script>
+      tailwind = {
+        theme: {
+          extend: {
+            colors: {
+              pink: {
+                50: "#FDF2F8",
+                100: "#FCE7F3",
+                200: "#FBCFE8",
+                300: "#F9A8D4",
+                400: "#FF85B6",
+                500: "#FF6B9D",
+                600: "#F14E87",
+                700: "#CE2B6A",
+                800: "#9F1E52",
+                900: "#7A1A42",
+              },
+              purple: {
+                400: "#C084FC",
+                500: "#A855F7",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ==============================
+       Theme variables (pink-first)
+       ============================== */
+      :root {
+        --color-primary-pink: #ff6b9d;
+        --color-secondary-pink: #ffb7d5;
+        --color-accent-purple: #a855f7;
+        --color-cream: #fff7fb;
+        --shadow-cute: 0 20px 60px rgba(255, 107, 157, 0.22),
+          0 10px 24px rgba(56, 189, 248, 0.12);
+        --shadow-soft: 0 18px 40px rgba(255, 107, 157, 0.16);
+        --ring-cute: 0 0 0 4px rgba(255, 107, 157, 0.22);
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: Nunito, Quicksand, ui-sans-serif, system-ui, -apple-system,
+          Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        background: linear-gradient(
+            135deg,
+            rgba(255, 183, 213, 0.38),
+            rgba(255, 107, 157, 0.14)
+          ),
+          radial-gradient(
+            1000px 500px at 10% 20%,
+            rgba(168, 85, 247, 0.12),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 480px at 85% 30%,
+            rgba(56, 189, 248, 0.1),
+            transparent 58%
+          ),
+          #fff;
+      }
+
+      /* ==============================
+       Subtle noise / paper texture
+       ============================== */
+      .paper-noise {
+        position: relative;
+        isolation: isolate;
+      }
+      .paper-noise::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: 0.28;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+
+      /* ==============================
+       Custom utilities (requested)
+       ============================== */
+      .text-shadow-cute {
+        text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6),
+          0 10px 26px rgba(255, 107, 157, 0.22);
+      }
+
+      .bg-gradient-pinky {
+        background-image: linear-gradient(
+          135deg,
+          var(--color-secondary-pink),
+          var(--color-primary-pink)
+        );
+      }
+
+      .border-cute {
+        border: 2px dashed rgba(168, 85, 247, 0.45);
+        outline: 3px solid rgba(255, 107, 157, 0.1);
+        outline-offset: 3px;
+      }
+
+      /* ==============================
+       Animations (gentle & slow)
+       ============================== */
+      @keyframes gentle-bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-7px);
+        }
+      }
+
+      @keyframes soft-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.92;
+        }
+        50% {
+          transform: scale(1.04);
+          opacity: 1;
+        }
+      }
+
+      @keyframes float-elastic {
+        0% {
+          transform: translate3d(0, 0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate3d(8px, -12px, 0) rotate(3deg);
+        }
+        66% {
+          transform: translate3d(-6px, -6px, 0) rotate(-2deg);
+        }
+        100% {
+          transform: translate3d(0, 0, 0) rotate(0deg);
+        }
+      }
+
+      .anim-bounce-gentle {
+        animation: gentle-bounce 3.6s ease-in-out infinite;
+      }
+
+      .anim-pulse-soft {
+        animation: soft-pulse 4.2s ease-in-out infinite;
+      }
+
+      .anim-float-elastic {
+        animation: float-elastic 6.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+        will-change: transform;
+      }
+
+      /* ==============================
+       Hero-specific styles
+       ============================== */
+      .hero-sprinkles {
+        border-radius: 28px;
+        box-shadow: var(--shadow-soft);
+        background: radial-gradient(
+            1000px 500px at 20% 10%,
+            rgba(255, 183, 213, 0.55),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 520px at 70% 20%,
+            rgba(168, 85, 247, 0.18),
+            transparent 55%
+          ),
+          linear-gradient(
+            135deg,
+            rgba(255, 183, 213, 0.55),
+            rgba(255, 107, 157, 0.16)
+          );
+      }
+
+      .sweet-card {
+        border-radius: 24px;
+        box-shadow: var(--shadow-cute);
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .cute-focus:focus {
+        outline: none;
+        box-shadow: var(--ring-cute);
+        border-color: rgba(255, 107, 157, 0.55);
+      }
+
+      /* Image blur placeholder behavior */
+      .lazy-blur {
+        filter: blur(18px);
+        transform: scale(1.03);
+        transition: filter 700ms ease, transform 700ms ease;
+      }
+      .lazy-blur.is-loaded {
+        filter: blur(0);
+        transform: scale(1);
+      }
+
+      /* Decorative SVGs */
+      .deco {
+        filter: drop-shadow(0 14px 22px rgba(255, 107, 157, 0.18));
+      }
+
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .anim-bounce-gentle,
+        .anim-pulse-soft,
+        .anim-float-elastic {
+          animation: none !important;
+        }
+        .lazy-blur {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="text-slate-800">
+    <main class="paper-noise min-h-screen">
+      <section class="mx-auto max-w-6xl px-5 py-10 sm:py-14">
+        <div
+          class="hero-sprinkles relative overflow-hidden px-6 py-10 sm:px-10 sm:py-12 lg:px-12"
+        >
+          <!-- Background blobs (soft) -->
+          <div
+            class="pointer-events-none absolute -left-14 -top-16 h-56 w-56 rounded-full bg-pink-200/60 blur-2xl"
+          ></div>
+          <div
+            class="pointer-events-none absolute -right-20 -bottom-16 h-72 w-72 rounded-full bg-purple-400/20 blur-2xl"
+          ></div>
+
+          <div class="relative grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-8">
+            <!-- Left (60%) -->
+            <div class="lg:col-span-3">
+              <div
+                class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-sm font-semibold text-pink-700 shadow-sm"
+              >
+                <span
+                  class="inline-block h-2.5 w-2.5 rounded-full bg-gradient-pinky"
+                ></span>
+                <span>Sweetly simple • Playfully polished</span>
+              </div>
+
+              <h1
+                class="mt-5 text-shadow-cute text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl"
+              >
+                A cute, colorful hero that feels like a warm pink hug.
+              </h1>
+
+              <p
+                class="mt-4 max-w-xl text-lg leading-relaxed text-slate-700 sm:text-xl"
+              >
+                Bring your next launch to life with soft gradients, rounded
+                shapes, and friendly details. Designed to feel bright,
+                approachable, and beautifully modern.
+              </p>
+
+              <!-- Feature list -->
+              <ul class="mt-6 grid max-w-xl gap-3 sm:grid-cols-2">
+                <li
+                  class="flex items-start gap-3 rounded-2xl bg-white/60 p-3 shadow-sm transition-colors hover:bg-white/75"
+                >
+                  <span
+                    class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-pink-100 text-pink-700"
+                  >
+                    <!-- Check icon -->
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M16.5 6.2L8.7 14 4 9.4"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-slate-900">Soft shadows</p>
+                    <p class="text-sm leading-relaxed text-slate-600">
+                      Colorful depth without harsh contrast.
+                    </p>
+                  </div>
+                </li>
+
+                <li
+                  class="flex items-start gap-3 rounded-2xl bg-white/60 p-3 shadow-sm transition-colors hover:bg-white/75"
+                >
+                  <span
+                    class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-purple-400/15 text-purple-500"
+                  >
+                    <!-- Star icon -->
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                        fill="currentColor"
+                        opacity="0.9"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-slate-900">Playful accents</p>
+                    <p class="text-sm leading-relaxed text-slate-600">
+                      Hearts, stars, blobs—kept tasteful.
+                    </p>
+                  </div>
+                </li>
+
+                <li
+                  class="flex items-start gap-3 rounded-2xl bg-white/60 p-3 shadow-sm transition-colors hover:bg-white/75"
+                >
+                  <span
+                    class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-sky-200/40 text-sky-600"
+                  >
+                    <!-- Sparkle icon -->
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 2l1.3 5.2L18 8.5l-4.7 1.3L12 15l-1.3-5.2L6 8.5l4.7-1.3L12 2z"
+                        fill="currentColor"
+                        opacity="0.85"
+                      />
+                      <path
+                        d="M19 13l.8 3.1L23 17l-3.2.9L19 21l-.8-3.1L15 17l3.2-.9L19 13z"
+                        fill="currentColor"
+                        opacity="0.65"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-slate-900">Breathing room</p>
+                    <p class="text-sm leading-relaxed text-slate-600">
+                      Generous spacing for comfy readability.
+                    </p>
+                  </div>
+                </li>
+
+                <li
+                  class="flex items-start gap-3 rounded-2xl bg-white/60 p-3 shadow-sm transition-colors hover:bg-white/75"
+                >
+                  <span
+                    class="mt-0.5 inline-flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-pink-200/55 text-pink-700"
+                  >
+                    <!-- Heart icon -->
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M12 20.7s-7.6-4.6-9.6-9.2C1 8 2.8 5.8 5.5 5.5c1.8-.2 3.5.7 4.5 2 1-1.3 2.7-2.2 4.5-2 2.7.3 4.5 2.5 3.1 6-2 4.6-9.6 9.2-9.6 9.2z"
+                        fill="currentColor"
+                        opacity="0.9"
+                      />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-slate-900">
+                      Rounded everything
+                    </p>
+                    <p class="text-sm leading-relaxed text-slate-600">
+                      Friendly corners + gentle motion.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+
+              <!-- Subscription -->
+              <div class="mt-7 max-w-xl">
+                <div class="sweet-card border-cute p-4">
+                  <form
+                    class="flex flex-col gap-3 sm:flex-row sm:items-center"
+                    aria-label="Email subscription"
+                  >
+                    <label class="sr-only" for="email">Email</label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="nywnchan@email.com"
+                      class="cute-focus w-full flex-1 rounded-2xl border border-white/60 bg-white/70 px-4 py-3 text-slate-800 placeholder:text-slate-500 shadow-sm transition-colors"
+                      autocomplete="email"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      class="bg-gradient-pinky inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-bold text-white shadow-md transition-transform duration-200 ease-out hover:scale-[1.03] hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-200"
+                    >
+                      <span>Get the sweet updates</span>
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 12h12"
+                          stroke="white"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M13 6l6 6-6 6"
+                          stroke="white"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  </form>
+
+                  <!-- Trust -->
+                  <div
+                    class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div class="flex items-center gap-2">
+                      <div class="flex" aria-label="Rating: 5 out of 5">
+                        <svg
+                          class="h-5 w-5 text-pink-600"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                          />
+                        </svg>
+                        <svg
+                          class="h-5 w-5 text-pink-600"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                          />
+                        </svg>
+                        <svg
+                          class="h-5 w-5 text-pink-600"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                          />
+                        </svg>
+                        <svg
+                          class="h-5 w-5 text-pink-600"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                          />
+                        </svg>
+                        <svg
+                          class="h-5 w-5 text-pink-600"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                          />
+                        </svg>
+                      </div>
+                      <p class="text-sm font-semibold text-slate-800">
+                        Loved by 2,400+ builders
+                      </p>
+                    </div>
+
+                    <p class="text-sm leading-relaxed text-slate-600">
+                      “Everything feels light, friendly, and beautifully put
+                      together.”
+                      <span class="font-semibold text-slate-700"
+                        >— Maya, Product Designer</span
+                      >
+                    </p>
+                  </div>
+                </div>
+
+                <p id="formNote" class="mt-3 hidden text-sm text-slate-700"></p>
+              </div>
+            </div>
+
+            <!-- Right (40%) -->
+            <div class="lg:col-span-2">
+              <div class="relative mx-auto w-full max-w-md lg:ml-auto lg:mr-0">
+                <!-- Floating decorative elements -->
+                <div
+                  class="pointer-events-none absolute -left-10 -top-8 h-20 w-20 rounded-full bg-purple-400/20 blur-sm anim-pulse-soft"
+                  style="animation-delay: -1.2s"
+                ></div>
+                <div
+                  class="pointer-events-none absolute -right-10 top-10 h-16 w-16 rounded-full bg-pink-200/70 blur-sm anim-pulse-soft"
+                  style="animation-delay: -2.4s"
+                ></div>
+                <div
+                  class="pointer-events-none absolute left-4 -bottom-10 h-24 w-24 rounded-full bg-sky-200/40 blur anim-pulse-soft"
+                  style="animation-delay: -3.3s"
+                ></div>
+
+                <!-- Cute star + heart SVGs -->
+                <svg
+                  class="deco pointer-events-none absolute -left-8 top-24 h-12 w-12 text-pink-600/70 anim-float-elastic"
+                  style="animation-delay: -0.8s"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 2.8l2.8 6.1 6.6.6-5 4.3 1.5 6.4L12 16.9 6.1 20.2 7.6 13.8 2.6 9.5l6.6-.6L12 2.8z"
+                  />
+                </svg>
+                <svg
+                  class="deco pointer-events-none absolute -right-8 bottom-24 h-14 w-14 text-purple-400/60 anim-float-elastic"
+                  style="animation-delay: -2.1s"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 20.7s-7.6-4.6-9.6-9.2C1 8 2.8 5.8 5.5 5.5c1.8-.2 3.5.7 4.5 2 1-1.3 2.7-2.2 4.5-2 2.7.3 4.5 2.5 3.1 6-2 4.6-9.6 9.2-9.6 9.2z"
+                  />
+                </svg>
+
+                <!-- Image container -->
+                <div class="relative">
+                  <div class="absolute -top-4 left-6 z-10">
+                    <span
+                      class="inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-sm font-bold text-slate-800 shadow-sm"
+                    >
+                      <span
+                        class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-pink-100 text-pink-700 anim-bounce-gentle"
+                      >
+                        <!-- tiny sparkle -->
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M12 2l1.3 5.2L18 8.5l-4.7 1.3L12 15l-1.3-5.2L6 8.5l4.7-1.3L12 2z"
+                          />
+                        </svg>
+                      </span>
+                      <span>New: Candy-coated UI kit</span>
+                    </span>
+                  </div>
+
+                  <div
+                    class="sweet-card border-cute relative overflow-hidden p-4 sm:p-5"
+                  >
+                    <!-- Soft blob behind image -->
+                    <div
+                      class="pointer-events-none absolute -right-10 -top-14 h-40 w-40 rounded-full bg-pink-200/60 blur-2xl"
+                    ></div>
+                    <div
+                      class="pointer-events-none absolute -left-12 bottom-0 h-44 w-44 rounded-full bg-purple-400/15 blur-2xl"
+                    ></div>
+
+                    <div
+                      class="relative overflow-hidden rounded-2xl bg-white/60"
+                    >
+                      <img
+                        id="heroImg"
+                        data-blur
+                        class="lazy-blur w-full rounded-2xl border border-white/70 shadow-[0_18px_50px_rgba(255,107,157,0.22)]"
+                        src="https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=900&q=80"
+                        alt="Cute product illustration"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+
+                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                      <div
+                        class="rounded-2xl bg-white/65 p-3 shadow-sm transition-colors hover:bg-white/80"
+                      >
+                        <p class="text-sm font-bold text-slate-900">
+                          Soft + round
+                        </p>
+                        <p class="text-sm leading-relaxed text-slate-600">
+                          XL radii, gentle shadows, pastel accents.
+                        </p>
+                      </div>
+                      <div
+                        class="rounded-2xl bg-white/65 p-3 shadow-sm transition-colors hover:bg-white/80"
+                      >
+                        <p class="text-sm font-bold text-slate-900">
+                          Motion (calm)
+                        </p>
+                        <p class="text-sm leading-relaxed text-slate-600">
+                          Slow floats and pulses with comfy easing.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Small blob "sticker" -->
+                <div class="pointer-events-none absolute -bottom-6 right-6">
+                  <div
+                    class="anim-float-elastic rounded-3xl bg-white/70 px-4 py-3 shadow-md"
+                    style="animation-delay: -1.7s"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="h-10 w-10 rounded-2xl bg-gradient-pinky shadow-sm"
+                      ></div>
+                      <div>
+                        <p class="text-sm font-bold text-slate-900">
+                          Mascot-ready
+                        </p>
+                        <p class="text-xs text-slate-600">
+                          Drop in your character art.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="mt-8 text-center text-sm text-slate-600">
+          <span
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 px-4 py-2 shadow-sm"
+          >
+            <span class="h-2 w-2 rounded-full bg-pink-500"></span>
+            Built with soft gradients, subtle texture, and gentle motion.
+          </span>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      // ==============================
+      // Image lazy-load blur placeholder
+      // ==============================
+      (function () {
+        const imgs = document.querySelectorAll("img[data-blur]");
+        imgs.forEach((img) => {
+          const markLoaded = () => img.classList.add("is-loaded");
+          if (img.complete) {
+            // In case it was cached
+            requestAnimationFrame(markLoaded);
+          } else {
+            img.addEventListener("load", markLoaded, { once: true });
+            img.addEventListener(
+              "error",
+              () => {
+                // Keep layout stable, but remove heavy blur to avoid a "broken" look.
+                img.classList.add("is-loaded");
+              },
+              { once: true }
+            );
+          }
+        });
+      })();
+
+      // ==============================
+      // Subscription demo interaction
+      // ==============================
+      (function () {
+        const form = document.querySelector(
+          'form[aria-label="Email subscription"]'
+        );
+        const note = document.getElementById("formNote");
+        const email = document.getElementById("email");
+        if (!form || !note || !email) return;
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const value = email.value.trim();
+          note.classList.remove("hidden");
+          if (!value || !value.includes("@")) {
+            note.textContent = "Please enter a valid email to join the list.";
+            note.className = "mt-3 text-sm font-semibold text-pink-700";
+            email.focus();
+            return;
+          }
+          note.textContent =
+            "Thanks! You're on the list — watch for something sweet soon.";
+          note.className = "mt-3 text-sm font-semibold text-slate-700";
+          form.reset();
+        });
+      })();
+    </script>
+  </body>
+</html>
